@@ -1,5 +1,5 @@
 import { createReminder, getRemindersByUserId, updateReminder, deleteReminder } from '../services/firebaseService.js';
-import { sendReminderEmail } from '../utils/sendEmail.js';
+import { sendReminderEmail } from '../utils/SendEmail.js';
 import admin from '../services/firebaseAdmin.js';
 
 // Controller to create a reminder
