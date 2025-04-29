@@ -65,15 +65,6 @@ const Dashboard = () => {
         </style>
       </div>
 
-      {/* Tracker PNG in Center */}
-      {/* <div className="fixed inset-0 flex items-center justify-center z-10 pointer-events-none">
-        <img 
-          src="/tracker.png" 
-          alt="Tracker" 
-          className="w-70 h-70 object-contain opacity-90"
-        />
-      </div> */}
-
       {/* Goal GIF Overlay */}
       <div className="fixed bottom-4 right-4 z-10">
         <img 
