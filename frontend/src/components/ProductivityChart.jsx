@@ -1,41 +1,83 @@
 import React from 'react';
-import { Line } from 'react-chartjs-2';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Line, Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 
-// Register necessary components for Chart.js
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
-const ProductivityChart = () => {
-  // Define the chart data structure
-  const chartData = {
-    labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+const ProductivityChart = ({ weeklyStats = [], goalsCompleted = 0, habitsCompleted = 0 }) => {
+  // Fallback dummy data if no props passed
+  const lineChartData = {
+    labels: weeklyStats.map(stat => stat.week) || ["Week 1", "Week 2", "Week 3", "Week 4"],
     datasets: [
       {
         label: "Goals Completed",
-        data: [10, 20, 30, 40], // Replace with dynamic data
+        data: weeklyStats.map(stat => stat.goalsCompleted) || [10, 20, 30, 40],
         borderColor: "rgba(75,192,192,1)",
         backgroundColor: "rgba(75,192,192,0.2)",
         borderWidth: 1,
       },
+      {
+        label: "Habits Completed",
+        data: weeklyStats.map(stat => stat.habitsCompleted) || [5, 15, 25, 35],
+        borderColor: "rgba(255,99,132,1)",
+        backgroundColor: "rgba(255,99,132,0.2)",
+        borderWidth: 1,
+      }
     ],
   };
 
-  // Chart options for responsive behavior
+  const barChartData = {
+    labels: ["Goals", "Habits"],
+    datasets: [
+      {
+        label: "Total Completed",
+        data: [goalsCompleted, habitsCompleted],
+        backgroundColor: ["#4CAF50", "#2196F3"],
+        borderRadius: 6,
+      },
+    ],
+  };
+
   const options = {
     responsive: true,
     plugins: {
-      title: {
-        display: true,
-        text: 'Productivity Over Time',
-      },
+      legend: { position: 'top' },
+      title: { display: true, text: 'Productivity Over Time' },
+    },
+  };
+
+  const barOptions = {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: { display: true, text: 'Total Goals and Habits Completed' },
     },
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg">
-      <h3 className="text-xl mb-4">Productivity Chart</h3>
-      {/* Render the Line chart */}
-      <Line data={chartData} options={options} />
+    <div className="bg-white p-6 rounded-lg shadow-lg space-y-8">
+      <h3 className="text-xl mb-2">Productivity Chart</h3>
+      <Line data={lineChartData} options={options} />
+      <Bar data={barChartData} options={barOptions} />
     </div>
   );
 };

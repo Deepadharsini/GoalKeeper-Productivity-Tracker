@@ -13,8 +13,78 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <nav className="bg-white shadow-lg">
+    <div className="min-h-screen relative">
+      {/* Background Image */}
+      <div 
+        className="fixed inset-0 z-0"
+        style={{
+          backgroundImage: "url('/goalkeeper.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: '0.8'
+        }}
+      />
+
+      {/* Animated Welcome Text */}
+      <div className="absolute right-48 top-1/2 transform -translate-y-1/2 z-10 text-center">
+        <h1 className="text-4xl md:text-5xl font-bold leading-snug">
+          {/* Welcome to */}
+          <span className="text-yellow-500 block animate-pulse">Welcome to</span>
+
+          {/* GOALKEEPER with left-to-right animation */}
+          <span
+            className="text-purple-900 block mt-2 inline-block"
+            style={{
+              animation: 'move-left-right 2s ease-in-out infinite alternate',
+              display: 'inline-block',
+            }}
+          >
+            GOALKEEPER
+          </span>
+        </h1>
+
+        {/* Productivity made simple */}
+        <p
+          className="text-lg text-black mt-4 italic"
+          style={{
+            fontFamily: 'Arial, sans-serif',
+          }}
+        >
+          Productivity made simple
+        </p>
+
+        {/* Inline Keyframes */}
+        <style>
+          {`
+            @keyframes move-left-right {
+              0% { transform: translateX(-10px); }
+              100% { transform: translateX(10px); }
+            }
+          `}
+        </style>
+      </div>
+
+      {/* Tracker PNG in Center */}
+      <div className="fixed inset-0 flex items-center justify-center z-10 pointer-events-none">
+        <img 
+          src="/tracker.png" 
+          alt="Tracker" 
+          className="w-70 h-70 object-contain opacity-90"
+        />
+      </div>
+
+      {/* Goal GIF Overlay */}
+      <div className="fixed bottom-4 right-4 z-10">
+        <img 
+          src="/goal.gif" 
+          alt="Goal Animation" 
+          className="w-48 h-48 object-contain"
+        />
+      </div>
+
+      {/* Navigation */}
+      <nav className="bg-white/90 backdrop-blur-sm shadow-lg relative z-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex">
@@ -49,10 +119,10 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="flex items-center">
-              <div className="flex-shrink-0">
+              <div className="flex items-center space-x-4">
                 <Link
                   to="/dashboard/profile"
-                  className="relative inline-flex items-center mr-4"
+                  className="flex items-center"
                 >
                   <img
                     className="h-8 w-8 rounded-full"
@@ -73,7 +143,8 @@ const Dashboard = () => {
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8 relative z-20">
         <div className="px-4 py-6 sm:px-0">
           <Outlet />
         </div>
