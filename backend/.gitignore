@@ -1,0 +1,26 @@
+# Environment variables
+.env
+
+# Firebase service account
+config/serviceAccountKey.json
+
+# Node modules
+node_modules
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Directory for uploaded files
+uploads/
+
+# OS specific files
+.DS_Store
+Thumbs.db 
