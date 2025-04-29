@@ -3,14 +3,14 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginStart, loginSuccess, loginFailure } from "../store/slices/authSlice";
-import { 
-  signInWithEmailAndPassword, 
-  GoogleAuthProvider, 
-  signInWithPopup
+import {
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 import { ref, get, set } from "firebase/database";
 import { auth, db } from "../config/firebase";
-import googleLogo from '../assets/google.svg';
+import googleLogo from "../assets/google.svg";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,39 +23,35 @@ const Login = () => {
     e.preventDefault();
     dispatch(loginStart());
     try {
-      // Sign in with Firebase
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      
-      // Get the ID token
       const token = await user.getIdToken();
-      
-      // Get user data from Realtime Database
+
       const userRef = ref(db, `users/${user.uid}`);
       const snapshot = await get(userRef);
-      
+
       if (!snapshot.exists()) {
-        // Create new user document if it doesn't exist
         await set(userRef, {
           email: user.email,
-          name: user.displayName || user.email.split('@')[0],
+          name: user.displayName || user.email.split("@")[0],
           createdAt: new Date().toISOString(),
           goals: [],
-          preferences: {}
+          preferences: {},
         });
       }
-      
-      // Store token and user data
+
       localStorage.setItem("token", token);
-      dispatch(loginSuccess({ 
-        user: { 
-          ...snapshot.val(),
-          uid: user.uid,
-          email: user.email
-        }, 
-        token 
-      }));
-      
+      dispatch(
+        loginSuccess({
+          user: {
+            ...snapshot.val(),
+            uid: user.uid,
+            email: user.email,
+          },
+          token,
+        })
+      );
+
       navigate("/dashboard");
     } catch (err) {
       console.error("Login error:", err);
@@ -67,35 +63,37 @@ const Login = () => {
     dispatch(loginStart());
     try {
       const authProvider = new GoogleAuthProvider();
+      authProvider.setCustomParameters({ prompt: "select_account" }); // 🔁 Force account selection
+
       const result = await signInWithPopup(auth, authProvider);
       const user = result.user;
       const token = await user.getIdToken();
 
-      // Check if user exists in Realtime Database
       const userRef = ref(db, `users/${user.uid}`);
       const snapshot = await get(userRef);
-      
+
       if (!snapshot.exists()) {
-        // Create new user document
         await set(userRef, {
           email: user.email,
-          name: user.displayName || user.email.split('@')[0],
+          name: user.displayName || user.email.split("@")[0],
           createdAt: new Date().toISOString(),
           goals: [],
-          preferences: {}
+          preferences: {},
         });
       }
 
       localStorage.setItem("token", token);
-      dispatch(loginSuccess({ 
-        user: { 
-          ...snapshot.val(),
-          uid: user.uid,
-          email: user.email
-        }, 
-        token 
-      }));
-      
+      dispatch(
+        loginSuccess({
+          user: {
+            ...snapshot.val(),
+            uid: user.uid,
+            email: user.email,
+          },
+          token,
+        })
+      );
+
       navigate("/dashboard");
     } catch (err) {
       console.error("Google login error:", err);
@@ -112,7 +110,10 @@ const Login = () => {
           </h2>
         </div>
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <div
+            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+            role="alert"
+          >
             <span className="block sm:inline">{error}</span>
           </div>
         )}
@@ -154,7 +155,10 @@ const Login = () => {
 
           <div className="flex items-center justify-between">
             <div className="text-sm">
-              <Link to="/forgot-password" className="font-medium text-indigo-600 hover:text-indigo-500">
+              <Link
+                to="/forgot-password"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
                 Forgot your password?
               </Link>
             </div>
@@ -195,7 +199,10 @@ const Login = () => {
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
             Don't have an account?{" "}
-            <Link to="/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
+            <Link
+              to="/signup"
+              className="font-medium text-indigo-600 hover:text-indigo-500"
+            >
               Register here
             </Link>
           </p>

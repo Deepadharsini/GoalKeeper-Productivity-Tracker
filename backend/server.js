@@ -17,7 +17,21 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+// Configure CORS
+const allowedOrigins = ['http://localhost:5173']; // Add your front-end's URL here
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true); // Allow the request
+    } else {
+      callback(new Error('Not allowed by CORS')); // Reject the request
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true, // Allow cookies and authorization headers
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Serve static files from the uploads directory
