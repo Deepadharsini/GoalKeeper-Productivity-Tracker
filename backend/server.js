@@ -18,7 +18,10 @@ dotenv.config();
 const app = express();
 
 // Configure CORS
-const allowedOrigins = ['http://localhost:5173']; // Add your front-end's URL here
+const allowedOrigins = [
+  'http://localhost:5173',           
+  'https://goalkee.vercel.app'       
+];
 const corsOptions = {
   origin: (origin, callback) => {
     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
