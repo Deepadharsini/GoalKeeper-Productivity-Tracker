@@ -18,7 +18,16 @@ const HabitList = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setHabits(response.data);
+  
+      // Log the response to see its structure
+      console.log("Fetched habits response:", response.data);
+  
+      // Ensure the result is an array before setting it
+      const fetchedHabits = Array.isArray(response.data)
+        ? response.data
+        : response.data.habits || [];
+  
+      setHabits(fetchedHabits);
       setError(null);
     } catch (error) {
       console.error('Failed to load habits', error);
@@ -27,7 +36,7 @@ const HabitList = () => {
       setLoading(false);
     }
   };
-
+  
   // Add habit with authentication
   const handleAddHabit = async (e) => {
     e.preventDefault();
