@@ -75,10 +75,10 @@ const GoalList = () => {
   }
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg">
-      <h3 className="text-2xl font-bold mb-6">Goals</h3>
+    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg max-w-4xl mx-auto">
+      <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Goals</h3>
 
-      <form onSubmit={handleSubmit} className="mb-8 space-y-4">
+      <form onSubmit={handleSubmit} className="mb-6 sm:mb-8 space-y-3 sm:space-y-4">
         <div>
           <input
             type="text"
@@ -87,7 +87,7 @@ const GoalList = () => {
             value={newGoal.title}
             onChange={handleChange}
             required
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full p-2 sm:p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
           />
         </div>
         <div>
@@ -97,7 +97,7 @@ const GoalList = () => {
             value={newGoal.description}
             onChange={handleChange}
             required
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 h-24"
+            className="w-full p-2 sm:p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 h-20 sm:h-24 text-sm sm:text-base"
           />
         </div>
         <div>
@@ -107,18 +107,18 @@ const GoalList = () => {
             value={newGoal.deadline}
             onChange={handleChange}
             required
-            className="w-full p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+            className="w-full p-2 sm:p-3 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-sm sm:text-base"
           />
         </div>
         <button
           type="submit"
-          className="w-full bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          className="w-full bg-indigo-600 text-white px-4 py-2 sm:py-3 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-sm sm:text-base"
         >
           Add Goal
         </button>
       </form>
 
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         {goals.map((goal) => {
           const today = getToday();
           const completedDates = goal.completedDates || [];
@@ -126,43 +126,44 @@ const GoalList = () => {
           return (
             <div
               key={goal.id}
-              className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow flex flex-col gap-2"
+              className="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow flex flex-col gap-2"
             >
-              <div className="flex items-center justify-between">
-                <h4 className="text-lg font-semibold">{goal.title}</h4>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <h4 className="text-base sm:text-lg font-semibold">{goal.title}</h4>
                 <button
                   onClick={() => handleDelete(goal.id)}
-                  className="text-red-500 hover:text-red-700 text-sm border border-red-200 rounded px-2 py-1 ml-2"
+                  className="text-red-500 hover:text-red-700 text-xs sm:text-sm border border-red-200 rounded px-2 py-1 self-end sm:self-auto"
                 >
                   Delete
                 </button>
               </div>
-              <div className="flex items-center gap-4 mt-2">
-                <label className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-1 sm:mt-2">
+                <label className="flex items-center gap-2 text-sm">
                   <input
                     type="checkbox"
                     checked={isTodayCompleted}
                     onChange={() => handleDailyCheck(goal)}
                     disabled={isTodayCompleted}
+                    className="w-4 h-4"
                   />
                   Daily
                 </label>
-                <span className={goal.status === 'completed' ? "text-green-600" : "text-yellow-600"}>
+                <span className={`text-sm ${goal.status === 'completed' ? "text-green-600" : "text-yellow-600"}`}>
                   {goal.status === 'completed' ? "Completed" : "In Progress"}
                 </span>
               </div>
-              <p className="text-gray-600 mt-2">{goal.description}</p>
-              <p className="text-sm text-gray-500 mt-2">
+              <p className="text-sm text-gray-600 mt-1 sm:mt-2">{goal.description}</p>
+              <p className="text-xs sm:text-sm text-gray-500 mt-1 sm:mt-2">
                 Deadline: {new Date(goal.deadline).toLocaleDateString()}
               </p>
-              <div className="mt-2">
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
+              <div className="mt-1 sm:mt-2">
+                <div className="w-full bg-gray-200 rounded-full h-2 sm:h-2.5">
                   <div
-                    className="bg-indigo-600 h-2.5 rounded-full"
+                    className="bg-indigo-600 h-2 sm:h-2.5 rounded-full"
                     style={{ width: `${goal.progress || 0}%` }}
                   ></div>
                 </div>
-                <p className="text-sm text-gray-500 mt-1">Progress: {goal.progress || 0}%</p>
+                <p className="text-xs sm:text-sm text-gray-500 mt-1">Progress: {goal.progress || 0}%</p>
               </div>
             </div>
           );

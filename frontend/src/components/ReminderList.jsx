@@ -45,23 +45,23 @@ const ReminderList = () => { // Remove props, fetch data inside
   }, []);
 
   return (
-    <div className="mt-6 bg-white p-6 rounded-lg shadow">
-      <h3 className="text-lg font-semibold mb-4">Your Reminders</h3>
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      {loading && <p>Loading...</p>}
-      <ul className="space-y-3">
+    <div className="mt-4 sm:mt-6 bg-white p-4 sm:p-6 rounded-lg shadow max-w-2xl mx-auto">
+      <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">Your Reminders</h3>
+      {error && <p className="text-red-500 mb-3 sm:mb-4 text-sm sm:text-base">{error}</p>}
+      {loading && <p className="text-sm sm:text-base">Loading...</p>}
+      <ul className="space-y-2 sm:space-y-3">
         {reminders.length === 0 && !loading ? (
-          <p className="text-gray-500">No reminders set yet.</p>
+          <p className="text-gray-500 text-sm sm:text-base">No reminders set yet.</p>
         ) : (
           reminders.map((reminder) => (
-            <li key={reminder.id} className="flex justify-between items-center p-4 border-b"> {/* Use reminder.id */}
-              <div>
-                <p className="font-semibold">{reminder.title}</p>
-                <p className="text-gray-600">{new Date(reminder.time).toLocaleString()}</p>
+            <li key={reminder.id} className="flex flex-col sm:flex-row sm:justify-between sm:items-center p-3 sm:p-4 border-b gap-2 sm:gap-4">
+              <div className="flex-1">
+                <p className="font-semibold text-sm sm:text-base">{reminder.title}</p>
+                <p className="text-gray-600 text-xs sm:text-sm">{new Date(reminder.time).toLocaleString()}</p>
               </div>
               <button
-                onClick={() => handleDeleteReminder(reminder.id)} // Use reminder.id
-                className="text-red-500 hover:underline"
+                onClick={() => handleDeleteReminder(reminder.id)}
+                className="text-red-500 hover:underline text-xs sm:text-sm self-end sm:self-auto"
                 disabled={loading}
               >
                 {loading ? "Deleting..." : "Delete"}

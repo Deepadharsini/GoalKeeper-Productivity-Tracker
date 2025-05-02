@@ -59,6 +59,7 @@ const ProductivityChart = ({ weeklyStats = [], goalsCompleted = 0, habitsComplet
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: { position: 'top' },
       title: { display: true, text: 'Productivity Over Time' },
@@ -67,6 +68,7 @@ const ProductivityChart = ({ weeklyStats = [], goalsCompleted = 0, habitsComplet
 
   const barOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
       title: { display: true, text: 'Total Goals and Habits Completed' },
@@ -74,10 +76,14 @@ const ProductivityChart = ({ weeklyStats = [], goalsCompleted = 0, habitsComplet
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-lg space-y-8">
-      <h3 className="text-xl mb-2">Productivity Chart</h3>
-      <Line data={lineChartData} options={options} />
-      <Bar data={barChartData} options={barOptions} />
+    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg space-y-6 sm:space-y-8 max-w-4xl mx-auto">
+      <h3 className="text-lg sm:text-xl mb-2">Productivity Chart</h3>
+      <div className="h-[300px] sm:h-[400px]">
+        <Line data={lineChartData} options={options} />
+      </div>
+      <div className="h-[300px] sm:h-[400px]">
+        <Bar data={barChartData} options={barOptions} />
+      </div>
     </div>
   );
 };
