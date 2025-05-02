@@ -92,7 +92,7 @@ const Dashboard = () => {
               <div className="sm:hidden ml-4">
                 <button
                   onClick={toggleMobileMenu}
-                  className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                  className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
                 >
                   <span className="sr-only">Open main menu</span>
                   {!isMobileMenuOpen ? (
@@ -159,38 +159,38 @@ const Dashboard = () => {
         </div>
 
         {/* Mobile menu */}
-        <div className={`sm:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
-          <div className="pt-2 pb-3 space-y-1">
+        <div className={`sm:hidden ${isMobileMenuOpen ? 'block' : 'hidden'} absolute top-16 left-0 right-0 bg-white shadow-lg`}>
+          <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
               to="/dashboard/goals"
-              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Goals
             </Link>
             <Link
               to="/dashboard/habits"
-              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Habits
             </Link>
             <Link
               to="/dashboard/chart"
-              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Progress
             </Link>
             <Link
               to="/dashboard/reminders"
-              className="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Reminders
             </Link>
             <div className="pt-4 pb-3 border-t border-gray-200">
-              <div className="flex items-center px-4">
+              <div className="flex items-center px-3">
                 <div className="flex-shrink-0">
                   <img
                     className="h-10 w-10 rounded-full"
@@ -205,7 +205,7 @@ const Dashboard = () => {
               <div className="mt-3 space-y-1">
                 <button
                   onClick={handleLogout}
-                  className="block w-full text-left px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-800 hover:bg-gray-100"
+                  className="block w-full text-left px-3 py-2 text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50 rounded-md"
                 >
                   Logout
                 </button>

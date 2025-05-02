@@ -15,12 +15,51 @@ import googleLogo from "../assets/google.svg";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isLoading, error } = useSelector((state) => state.auth);
+  const { isLoading } = useSelector((state) => state.auth);
+
+  const getErrorMessage = (errorCode) => {
+    switch (errorCode) {
+      case 'auth/invalid-email':
+        return 'Please enter a valid email address';
+      case 'auth/user-disabled':
+        return 'This account has been disabled';
+      case 'auth/user-not-found':
+        return 'No account found with this email';
+      case 'auth/wrong-password':
+        return 'Incorrect password';
+      case 'auth/too-many-requests':
+        return 'Too many failed attempts. Please try again later';
+      case 'auth/weak-password':
+        return 'Password should be at least 6 characters long';
+      case 'auth/email-already-in-use':
+        return 'This email is already registered';
+      case 'auth/operation-not-allowed':
+        return 'This operation is not allowed';
+      case 'auth/network-request-failed':
+        return 'Network error. Please check your connection';
+      default:
+        return 'An error occurred. Please try again';
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    
+    // Basic validation
+    if (!email || !password) {
+      setError("Please fill in all fields");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password should be at least 6 characters long");
+      return;
+    }
+
     dispatch(loginStart());
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -55,15 +94,18 @@ const Login = () => {
       navigate("/dashboard");
     } catch (err) {
       console.error("Login error:", err);
-      dispatch(loginFailure(err.message || "Login failed"));
+      const errorMessage = getErrorMessage(err.code);
+      setError(errorMessage);
+      dispatch(loginFailure(errorMessage));
     }
   };
 
   const handleGoogleLogin = async () => {
+    setError("");
     dispatch(loginStart());
     try {
       const authProvider = new GoogleAuthProvider();
-      authProvider.setCustomParameters({ prompt: "select_account" }); // 🔁 Force account selection
+      authProvider.setCustomParameters({ prompt: "select_account" });
 
       const result = await signInWithPopup(auth, authProvider);
       const user = result.user;
@@ -97,7 +139,9 @@ const Login = () => {
       navigate("/dashboard");
     } catch (err) {
       console.error("Google login error:", err);
-      dispatch(loginFailure(err.message || "Google login failed"));
+      const errorMessage = getErrorMessage(err.code);
+      setError(errorMessage);
+      dispatch(loginFailure(errorMessage));
     }
   };
 
@@ -109,14 +153,13 @@ const Login = () => {
             Sign in to your account
           </h2>
         </div>
+
         {error && (
-          <div
-            className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
-            role="alert"
-          >
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
             <span className="block sm:inline">{error}</span>
           </div>
         )}
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
@@ -129,10 +172,10 @@ const Login = () => {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Email address"
               />
             </div>
             <div>
@@ -145,22 +188,11 @@ const Login = () => {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                placeholder="Password"
               />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="text-sm">
-              <Link
-                to="/forgot-password"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
-              >
-                Forgot your password?
-              </Link>
             </div>
           </div>
 
@@ -188,6 +220,7 @@ const Login = () => {
           <div className="mt-6">
             <button
               onClick={handleGoogleLogin}
+              disabled={isLoading}
               className="flex items-center justify-center w-full px-4 py-2 mb-4 text-sm font-medium text-gray-600 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
               <img src={googleLogo} alt="Google logo" className="w-5 h-5 mr-2" />

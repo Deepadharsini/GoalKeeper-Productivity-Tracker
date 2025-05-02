@@ -4,6 +4,19 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { auth, db } from "../config/firebase";
 
+const getErrorMessage = (errorCode) => {
+  switch (errorCode) {
+    case 'auth/email-already-in-use':
+      return 'This email is already registered';
+    case 'auth/invalid-email':
+      return 'Please enter a valid email address';
+    case 'auth/weak-password':
+      return 'Password should be at least 6 characters long';
+    default:
+      return 'An error occurred. Please try again';
+  }
+};
+
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,7 +48,7 @@ const Signup = () => {
       navigate("/login"); // Redirect to login after successful signup
     } catch (err) {
       console.error("Signup error:", err);
-      setError(err.message || "Error creating account. Please try again.");
+      setError(getErrorMessage(err.code));
     } finally {
       setIsLoading(false);
     }
