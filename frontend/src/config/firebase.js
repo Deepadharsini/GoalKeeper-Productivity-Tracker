@@ -5,7 +5,7 @@ import { getDatabase } from 'firebase/database';
 import { getFirestore } from 'firebase/firestore';
 import { getAnalytics } from 'firebase/analytics';
 
-console.log('VITE ENV:', import.meta.env); // DEBUG: Print all env variables
+// console.log('VITE ENV:', import.meta.env); // DEBUG: Print all env variables
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
