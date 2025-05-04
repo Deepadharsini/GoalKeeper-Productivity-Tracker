@@ -20,7 +20,8 @@ const app = express();
 // Configure CORS
 const allowedOrigins = [
   'http://localhost:5173',           
-  'https://goalkee.vercel.app'       
+  'https://goalkee.vercel.app' ,
+  'https://goalkee.deepadharsini.me'     
 ];
 const corsOptions = {
   origin: (origin, callback) => {
